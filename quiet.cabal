@@ -4,10 +4,10 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 8115fa43cb04ccd92fe9192fc1547bf268155685bac59dcfe87c1933e9c7f7b0
+-- hash: bfd3822b32b35aee5958f968ae00d57da6247e3734721d63a91d5791126903ef
 
 name:           quiet
-version:        0.1
+version:        0.2
 synopsis:       Generic deriving of Read/Show with no record labels.
 description:    Please see the README on GitHub at <https://github.com/jacobstanley/quiet#readme>
 category:       Generics

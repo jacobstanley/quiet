@@ -1,0 +1,32 @@
+name:                quiet
+version:             0.1
+github:              "jacobstanley/quiet"
+license:             BSD3
+author:              "Jacob Stanley"
+maintainer:          "jacob@stanley.io"
+copyright:           "Copyright (c) 2016-2020"
+synopsis:            Generic deriving of Read/Show with no record labels.
+category:            Generics
+description:         Please see the README on GitHub at <https://github.com/jacobstanley/quiet#readme>
+tested-with:         GHC==8.0.2,GHC==8.2.2,GHC==8.4.4,GHC==8.6.5,GHC==8.8.1
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+dependencies:
+- base >= 4.7 && < 5
+
+library:
+  source-dirs: src
+
+tests:
+  quiet-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - quiet

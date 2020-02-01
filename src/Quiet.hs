@@ -3,9 +3,9 @@
 
 -- | Generic deriving of 'Read' / 'Show' with no record labels.
 --
--- Often one wants to create a @newtype@ which has a convieniant field
--- accessor like @unUserId@ below, but that makes the derived 'Show'
--- instance overly verbose.
+-- Often one wants to create a @newtype@ which has a convenient field
+-- accessor like @unUserId@ below, but that unfortunately makes the
+-- 'Show' instance which is derived overly verbose.
 --
 -- For example:
 --
@@ -19,7 +19,7 @@
 -- >>> read "UserId {unUserId = \"simon\"}" :: UserId
 -- UserId {unUserId = "simon"}
 --
--- With @DerivingVia@ 'Quiet' you can have 'Show' instance which doesn't
+-- With @DerivingVia@ 'Quiet' you can have a 'Show' instance which doesn't
 -- print the field labels. It will render as if the @unUserId@ accessor
 -- wasn't present at all.
 --
@@ -35,7 +35,7 @@
 -- UserId "simon"
 --
 -- If you want to derive 'Read' / 'Show' without using @DerivingVia@ then
--- just use 'qreadPrec' and 'qshowsPrec' directly.
+-- you can use 'qreadPrec' and 'qshowsPrec' directly.
 --
 -- @
 -- instance Read UserId where readPrec = qreadPrec

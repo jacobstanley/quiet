@@ -1,4 +1,5 @@
 {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE UndecidableInstances #-}
 
 -- | Generic deriving of 'Read' / 'Show' with no record labels.
 --
@@ -9,44 +10,50 @@
 -- For example:
 --
 -- @
--- newtype UserId = UserId { unUserId :: String } deriving (Show)
+-- newtype UserId = UserId { unUserId :: String }
+--   deriving (Read, Show)
 -- @
---
--- Renders as:
 --
 -- >>> show (UserId "simon")
 -- UserId {unUserId = "simon"}
+-- >>> read "UserId {unUserId = \"simon\"}" :: UserId
+-- UserId {unUserId = "simon"}
 --
--- With 'qshowsPrec' you can have a @Show@ instance which doesn't print
--- the field labels. It will render as if the @unUserId@ accessor wasn't
--- present at all.
+-- With @DerivingVia@ 'Quiet' you can have 'Show' instance which doesn't
+-- print the field labels. It will render as if the @unUserId@ accessor
+-- wasn't present at all.
 --
 -- @
--- newtype UserId = UserId { unUserId :: String } deriving (Generic)
---
--- instance Show UserId where showsPrec = qshowsPrec
+-- newtype UserId = UserId { unUserId :: String }
+--   deriving (Generic)
+--   deriving (Read, Show) via (Quiet UserId)
 -- @
 --
 -- >>> show (UserId "simon")
 -- UserId "simon"
+-- >>> read "UserId \"simon\"" :: UserId
+-- UserId "simon"
 --
--- A compatible 'Read' instance can also be derived using 'qreadPrec' if
--- necessary.
+-- If you want to derive 'Read' / 'Show' without using @DerivingVia@ then
+-- just use 'qreadPrec' and 'qshowsPrec' directly.
 --
 -- @
--- instance Read UserId where showsPrec = qreadPrec
+-- instance Read UserId where readPrec = qreadPrec
+-- instance Show UserId where showsPrec = qshowsPrec
 -- @
 --
 module Quiet (
-    qshowsPrec
+    Quiet(..)
+  , qshowsPrec
   , qreadPrec
   ) where
 
-import GHC.Generics (Generic(..), Rep)
+import           GHC.Generics (Generic(..), Rep)
+import           GHC.Read (Read(..))
 
-import Text.ParserCombinators.ReadPrec (ReadPrec)
+import           Text.ParserCombinators.ReadPrec (ReadPrec)
 
-import Quiet.Internal (ConType(..), QShow(..), QRead(..))
+import           Quiet.Internal (ConType(..), QShow(..), QRead(..))
 
 
 -- | This implements a quiet version of 'Text.Show.showsPrec' which omits
@@ -60,3 +67,18 @@ qshowsPrec n =
 qreadPrec :: (Generic a, QRead (Rep a)) => ReadPrec a
 qreadPrec =
   fmap to (qreadPrec_ ConPrefix)
+
+-- | Derive 'Read' / 'Show' using @DerivingVia@.
+newtype Quiet a =
+  Quiet {
+      unQuiet :: a
+    }
+
+instance (Generic a, QShow (Rep a)) => Show (Quiet a) where
+  showsPrec n =
+    qshowsPrec n . unQuiet
+
+instance (Generic a, QRead (Rep a)) => Read (Quiet a) where
+  readPrec =
+    fmap Quiet qreadPrec
+

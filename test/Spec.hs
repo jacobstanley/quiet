@@ -1,15 +1,23 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE DeriveGeneric #-}
+
+#if __GLASGOW_HASKELL__ >= 860
 {-# LANGUAGE DerivingVia #-}
+#endif
 
 import GHC.Generics (Generic)
-import Quiet (Quiet(..))
+import Quiet
 import System.Exit (exitFailure)
 
+#if __GLASGOW_HASKELL__ >= 860
 newtype UserId = UserId { unUserId :: String }
   deriving (Generic)
-  deriving (Read, Show) via (Quiet UserId)
-
---instance Show UserId where showsPrec = qshowsPrec
+  deriving (Show) via (Quiet UserId)
+#else
+newtype UserId = UserId { unUserId :: String }
+  deriving (Generic)
+instance Show UserId where showsPrec = qshowsPrec
+#endif
 
 main :: IO ()
 main =

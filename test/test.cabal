@@ -1,0 +1,28 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: fb3ec8149e5117ee578f3b07d1f10cc8ae9162c68e5d7e895749fe57200db502
+
+name:           test
+version:        0.0.0
+license:        BSD3
+license-file:   LICENSE
+tested-with:    GHC==8.0.2,GHC==8.2.2,GHC==8.4.4,GHC==8.6.5,GHC==8.8.1
+build-type:     Simple
+
+test-suite quiet-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_test
+  hs-source-dirs:
+      ./.
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , hedgehog
+    , quiet
+  default-language: Haskell2010

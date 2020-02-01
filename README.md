@@ -21,7 +21,7 @@ ghci> show (UserId "simon")
 UserId {unUserId = "simon"}
 ```
 
-With 'qshowsPrec' you can have a `Show` instance which doesn't print
+With `qshowsPrec` you can have a `Show` instance which doesn't print
 the field labels. It will render as if the `unUserId` accessor wasn't
 present at all.
 

@@ -2,6 +2,8 @@
 
 Generic deriving of `Read` / `Show` with no record labels.
 
+[![Hackage][hackage-shield]][hackage] [![Travis][travis-shield]][travis]
+
 Often one wants to create a `newtype` which has a convenient field
 accessor like `unUserId` below, but that makes the derived `Show`
 instance overly verbose.
@@ -40,3 +42,8 @@ necessary.
 ```hs
 instance Read UserId where showsPrec = qreadPrec
 ```
+ [hackage]: http://hackage.haskell.org/package/quiet
+ [hackage-shield]: https://img.shields.io/hackage/v/quiet.svg?style=flat
+
+ [travis]: https://travis-ci.org/jacobstanley/quiet
+ [travis-shield]: https://travis-ci.org/jacobstanley/quiet.svg?branch=master
